@@ -35,9 +35,7 @@ ssh_config_proxy_containerized:
     - mode: 700
 
 # Note: In our registries we don't have released and not released versions at this point in time
-{% if grains.get('container_registry') %}
-  {% set container_registry = grains.get('container_registry') %}
-{% endif %}
+{% set container_registry = grains.get('container_registry', '') %}
 
 {% if grains.get('container_tag') %}
   {% set container_tag = grains.get('container_tag') %}
@@ -67,7 +65,7 @@ config_proxy_containerized:
           tag: {{ container_tag }}
         squid:
           {% if grains.get('squid_container_image') %}
-          image: {{ squid_container_image }}
+          image: {{ grains.get('squid_container_image') }}
           {% endif %}
           tag: {{ container_tag }}
         ssh:
